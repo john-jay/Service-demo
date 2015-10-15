@@ -7,19 +7,26 @@ using System.Threading.Tasks;
 
 namespace Service_demo
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        static void Main()
+        private static void Main(string[] args)
         {
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[]
+            if (Environment.UserInteractive) // Console app
             {
-                new Service1()
-            };
-            ServiceBase.Run(ServicesToRun);
+                var service1 = new Service1();
+                service1.TestStartupAndStop(args);
+            }
+            else // Windows service
+            {
+                var servicesToRun = new ServiceBase[]
+                {
+                    new Service1()
+                };
+                ServiceBase.Run(servicesToRun);
+            }
         }
     }
 }
