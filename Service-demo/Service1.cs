@@ -13,27 +13,33 @@ namespace Service_demo
 {
     public partial class Service1 : ServiceBase
     {
-        private readonly StreamWriter _writer;
+        private StreamWriter _writer;
 
         public Service1()
         {
             InitializeComponent();
-            _writer = File.CreateText("service log.txt");
         }
 
         protected override void OnStart(string[] args)
         {
+            _writer = File.CreateText("service log.txt");
             WriteLine("Started at: " + DateTime.Now);
         }
 
         protected override void OnStop()
         {
             WriteLine("Stopped at: " + DateTime.Now);
+            _writer.Close();
         }
 
-        async void WriteLine(string text)
+        //async void WriteLine(string text)
+        //{
+        //    await _writer.WriteLineAsync(text);
+        //}
+
+        void WriteLine(string text)
         {
-            await _writer.WriteLineAsync(text);
+            _writer.WriteLine(text);
         }
 
         // To test the service as a console app
